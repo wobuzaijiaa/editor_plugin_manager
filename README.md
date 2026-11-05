@@ -108,6 +108,6 @@ Developed and verified against SuperSplat Editor **v3.7.0**, commit `4069712370d
 
 This is the compatibility baseline, **not a mandatory version lock**. Other revisions can be built subject to dependency screening, integrity checks, and subsequent functional verification.
 
-See `SUPERSPLAT_API_DEPENDENCY_AUDIT.md` and the technical reference for upgrade procedures and detailed implementation contracts.
+See `SUPERSPLAT XYZ Filter & Section Tools API DEPENDENCY AUDIT.md` and the technical reference for upgrade procedures and detailed implementation contracts.
 
 **Version:** v1.0 — Live XYZ filtering, spatial inspection, selective export, and transformation-aware documentation.
