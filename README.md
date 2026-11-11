@@ -31,9 +31,14 @@ The two servers **share the plugin directory but do not communicate directly**: 
 - **Backend recovery:** **Refresh** rechecks management capabilities after a backend restart, without an Editor reload solely for that purpose.
 - **Compatibility guidance:** Advisory dependency checks; plugin-specific runtime compatibility remains the developer's responsibility.
 
+![plugins_button_list](Screenshot_plugins_button.png)
+![plugin-manager](Screenshot_plugin-manager.png)
+
 ## XYZ Filter — Reference Plugin
 
 **XYZ Filter, Snapshot & Export v1.0.10** provides reversible, coordinate-based filtering of **one selected 3DGS model** for cleanup and spatial inspection.
+
+![plugin_xyz-filter](Screenshot_plugin_xyz-filter.png)
 
 ### Features
 
@@ -54,6 +59,8 @@ The main XYZ popup appears at **bottom-left** and the preview at **bottom-right*
 **Splat Cleaner v0.2.6** provides region-aware 3DGS cleaning through the same Plugin Manager. Unlike XYZ Filter's reversible visibility preview, it focuses on cleaning operations.
 
 It is **independently installed, versioned, and updated**; neither plugin requires the other. See Splat Cleaner's own technical reference for its cleaning rules and workflow.
+
+![plugin_splat-cleaner](Screenshot_plugin_splat-cleaner.png)
 
 ## Installation and startup
 
