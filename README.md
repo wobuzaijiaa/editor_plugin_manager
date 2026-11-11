@@ -136,16 +136,6 @@ Removal clears saved plugin settings and Startup preferences. If browser cleanup
 
 - Install/Save/Remove require the management backend; already installed plugins can run with the original static server when the backend is unavailable.
 - Plugins share the Editor browser environment: install only trusted packages. Internal Editor APIs can change across releases.
-- Keep secrets and logs outside `dist/`; deployed backend files may be readable through the static server.
 - XYZ processes one model at a time; avoid changing its geometry during preview. Snapshot saving requires a compatible browser, and external spatial alignment needs separate validation.
-
-## Documentation
-
-- `SuperSplat_Plugin_Manager_Final_Architecture_and_Implementation_Guide_v1.11.md`
-- `SuperSplat_Plugin_Developer_Guide_v1.11.md`
-- `SuperSplat_Editor_Customization_Maintenance_HowTo_v1.11.md`
-- `SuperSplat_Plugin_Manager_HTTP_Architecture_Practical_Reference_v1.1.md`
-- `xyz-filter/README.md` and `xyz-filter/COMPATIBILITY.md`
-- Splat Cleaner technical reference and implementation guide
 
 **Project focus:** Reusable SuperSplat extension infrastructure, demonstrated by independently maintained XYZ Filter and Splat Cleaner plugins.
