@@ -90,8 +90,8 @@ From the project root (Windows examples):
 ~~~powershell
 .\maintain_editor.bat clone    # first checkout only
 .\maintain_editor.bat build    # builds Editor and deploys Manager
-.\run_supersplatEditor_p3013.bat
-# To stop: .\stop_supersplatEditor_p3013.bat
+.\run_supersplatEditor_p3013.bat # To start 
+.\stop_supersplatEditor_p3013.bat # To stop
 ~~~
 
 Alternatively, start both services separately:
