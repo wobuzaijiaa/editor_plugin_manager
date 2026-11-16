@@ -1,4 +1,4 @@
-# SuperSplat Plugin Manager
+# Editor Plugin Manager
 
 A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://github.com/playcanvas/supersplat), supporting independent plugin development and management **without modifying upstream TypeScript or rebuilding the Editor for each plugin update**.
 
@@ -11,7 +11,7 @@ SuperSplat Editor is a rapidly evolving open-source application. Built on PlayCa
 
 Implementing these tools through direct modifications to the Editor's source code introduces tight coupling and increases maintenance effort as both plugin and upstream editor versions evolve.
 
-**SuperSplat Plugin Manager adopts a decoupled architecture with clear responsibility boundaries.** It separates persistent plugin management from the Editor's native runtime and allows individual plugins to be developed and maintained independently.
+**Editor Plugin Manager adopts a decoupled architecture with clear responsibility boundaries.** It separates persistent plugin management from the Editor's native runtime and allows individual plugins to be developed and maintained independently.
 
 The objective is to reduce upstream maintenance dependencies while preserving customization flexibility and allowing developers to focus on plugin functionality.
 
@@ -49,7 +49,7 @@ Plugins are independently packaged browser modules using a common lifecycle cont
 
 Plugin Manager handles common integration and lifecycle operations. Individual plugins remain responsible for their functionality, dependencies, resource cleanup, and Editor API compatibility.
 
-See **`SuperSplat_Plugin_Developer_Guide_v1.11.md`** for package specifications, lifecycle contracts, and implementation examples.
+See **`Editor_Plugin_Developer_Guide_v1.11.md`** for package specifications, lifecycle contracts, and implementation examples.
 
 ## Reference Plugins
 
@@ -154,7 +154,7 @@ Use trusted plugins and keep the management backend on a trusted local machine. 
 
 ## Documentation
 
-- **Plugin development:** `SuperSplat_Plugin_Developer_Guide_v1.11.md`
+- **Plugin development:** `Editor_Plugin_Developer_Guide_v1.11.md`
 - **XYZ Filter document:** `xyz-filter/README.md`
 - **Splat Cleaner document:** `splat-cleaner/README.md`
 
