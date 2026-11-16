@@ -1,79 +1,103 @@
 # SuperSplat Plugin Manager
 
-A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://github.com/playcanvas/supersplat). Plugins can be installed and updated **without modifying upstream TypeScript or rebuilding the Editor for each plugin change**.
+A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://github.com/playcanvas/supersplat), supporting independent plugin development and management **without modifying upstream TypeScript or rebuilding the Editor for each plugin update**.
 
-Two independent plugins demonstrate the framework:
+**Versions:** Plugin Manager **v1.11** · XYZ Filter **v1.0.10** · Splat Cleaner **v0.3.18**.  
+**Editor references:** SuperSplat **v3.7.0**, **v3.8.0** and **v3.8.1**  (reviewed versions, not guaranteed compatibility across releases).
 
-- **XYZ Filter, Snapshot & Export** — Coordinate-based 3DGS filtering, orthographic snapshots, selective export, and transformation-aware metadata.
-- **Region-Aware Splat Cleaner** — 3DGS cleanup using Scale-Normalized Spacing (SNS), SplatTransform GPU Floaters, and complementary cleaning rules.
+## Motivation
 
-**Versions:** Plugin Manager **v1.11** · XYZ Filter **v1.0.10** · Splat Cleaner **v0.3.1**.  
-**Editor references:** Manager reviewed against SuperSplat **v3.7.0** and **v3.8.0**. These are compatibility references, not mandatory version locks.
+SuperSplat Editor is a rapidly evolving open-source application. Built on PlayCanvas Engine, it provides capable rendering and editing functionality for 3D Gaussian Splatting (3DGS), including large scenes. However, specialized workflows may require additional tools for spatial inspection, filtering, cleanup, and more.
 
-## Architecture
+Implementing these tools through direct modifications to the Editor's source code introduces tight coupling and increases maintenance effort as both plugin and upstream editor versions evolve.
 
-SuperSplat's **original static server** serves the Editor and installed plugins. A separate **Node.js management backend** installs/removes packages and saves settings. The browser-side Manager controls activation, UI, and runtime status.
+**SuperSplat Plugin Manager adopts a decoupled architecture with clear responsibility boundaries.** It separates persistent plugin management from the Editor's native runtime and allows individual plugins to be developed and maintained independently.
 
-| Component | Location |
-|---|---|
-| Browser Manager | `plugin-manager/custom-editor.js` → `supersplat/dist/custom-editor.js` |
-| Management backend | `supersplat/dist/runtime/management-server.cjs` |
-| Installed plugins and manifest | `supersplat/dist/plugins/` |
+The objective is to reduce upstream maintenance dependencies while preserving customization flexibility and allowing developers to focus on plugin functionality.
 
-Both servers share the plugin directory **without direct server-to-server communication**. The browser accesses each service separately. No duplicate Editor installation is needed.
+## Logical Architecture
 
-The Manager supports **Install, Activate, Open, Deactivate, Remove**, persistent **Settings/Startup**, and **Refresh** to recover backend management capabilities after a restart. Update plugins through **Remove → Install**. Compatibility checks are advisory; each plugin remains responsible for its own runtime compatibility.
+~~~mermaid
+flowchart TB
+    A["SuperSplat Editor<br/>Plugin Manager + Plugins"]
+    B["Original Static Server"]
+    C["Independent Management Backend"]
+    D["Shared Plugin Directory"]
 
-## XYZ Filter — Reference Plugin
+    B -->|"Serves"| A
+    A -->|"Management API"| C
+    B -->|"Reads"| D
+    C -->|"Reads / Writes"| D
+~~~
 
-**XYZ Filter v1.0.10** operates on one selected model at a time:
+- **SuperSplat Editor:** Rendering and editing, with browser-side plugin integration and lifecycle management.
+- **Original Static Server:** Serves the Editor and installed plugins.
+- **Management Backend:** Handles plugin installation, removal, and persistent settings.
+- **Shared Plugin Directory:** Stores installed plugins, manifest, and configuration.
+
+Both servers access the shared plugin directory without direct server-to-server communication.
+
+## Developing Your Own Plugins
+
+Plugins are independently packaged browser modules using a common lifecycle contract.
+
+1. **Create a package** with `plugin.json`, a JavaScript entry point, and required dependencies.
+2. **Implement the lifecycle** for activation, opening, and deactivation.
+3. **Integrate functionality** through available SuperSplat Editor APIs.
+4. **Install and test** through Plugin Manager, including activation, cleanup, and startup behavior.
+5. **Update independently** without rebuilding the Editor.
+
+Plugin Manager handles common integration and lifecycle operations. Individual plugins remain responsible for their functionality, dependencies, resource cleanup, and Editor API compatibility.
+
+See **`SuperSplat_Plugin_Developer_Guide_v1.11.md`** for package specifications, lifecycle contracts, and implementation examples.
+
+## Reference Plugins
+
+Two independently maintained plugins demonstrate the framework.
+
+### XYZ Filter, Snapshot & Export
+
+**XYZ Filter** — Coordinate-based 3DGS filtering, orthographic snapshots, selective export, and transformation-aware metadata.
 
 - **XYZ ranges and reversible preview:** Filter in Editor-world coordinates; opening the plugin starts preview and temporarily isolates other models. **Clear filter** restores full ranges and visibility without ending preview; **Restore and close** ends preview.
 - **Export:** Save filtered PLY, compressed PLY, SPLAT, SOG, or SPZ with an `.export.json` report.
 - **Snapshots:** Export orthographic PNG/JSON with camera/projection and applicable section metadata. The main-panel snapshot is unfiltered.
 - **Traceability:** Record supported post-load transformations and model metadata where reliable.
 
-With multiple loaded models, select the target explicitly. **Activate XYZ before model import** when transformation tracking is required. Restore and close preview before switching targets. XYZ does not perform image registration or provide transformation controls.
+With multiple loaded models, select the target explicitly. **Activate XYZ before model import** when transformation tracking is required. Restore and close preview before switching targets.
 
-![plugin_xyz-filter](Screenshot_plugin_xyz-filter.png)
+![XYZ Filter](Screenshot_plugin_xyz-filter.png)
 
-## Region-Aware Splat Cleaner
+Documentation: `xyz-filter/README.md`.
 
-**Splat Cleaner v0.3.1** provides an independent cleanup and export workflow:
+### Region-Aware Splat Cleaner
 
-- **SNS (CPU):** Tests Gaussian-center spacing relative to each splat's scale and orientation. It is a geometric outlier detector, **not** a rendering-quality measurement.
-- **GPU Floaters:** Separate SplatTransform **v3.11.1** analysis using a bundled browser runtime.
-- **Other rules and scope:** Size, Opacity, and other candidate rules; XYZ region and density scope restrict which candidates are selected. Enabled rule masks combine using **OR**.
+**Splat Cleaner** — 3DGS cleanup using Scale-Normalized Spacing (SNS), SplatTransform GPU Floaters, and complementary cleaning rules.
 
-SNS parameters balance cleaning strength:
+- **SNS (Hybrid CPU/GPU):** Bidirectional covariance-normalized neighborhood-support detection that uses Gaussian scales and orientations to identify unsupported splats. SNS evaluates geometric support rather than directly measuring rendering quality.
+- **GPU Floaters:** Independent SplatTransform **v3.11.1** analysis using a bundled browser runtime.
+- **Other rules:** Size, Opacity, and detached-component candidate selection, with XYZ region and density scope.
+- **Cached analysis and selection:** Independent analysis results are reused while valid. After the initial **Apply / Preview**, changing enabled methods automatically refreshes the candidate selection; analysis or selection-parameter changes still require manual **Apply / Preview**.
+- **Visual inspection:** Preview Original, Candidates, and Cleaned results. **Method Tint** highlights one enabled method at a time in Original or Candidates view, with configurable color and opacity. Candidate selection may include legitimate scene details.
 
-| Parameter | Default | Effect when increased |
-|---|---:|---|
-| Extent `k` (1–5; step 0.5) | **3** | Larger neighborhood; **fewer or equal** SNS candidates |
-| Minimum neighbors `m` (1–10) | **1** | Greater support requirement; **more or equal** SNS candidates |
+![Splat Cleaner](Screenshot_plugin_splat-cleaner.png)
 
-Start with **`k=3, m=1`**. Increase `k` to preserve sparse detail; decrease `k` or increase `m` for stronger pruning. Changing `k`/`m` requires **Analyze SNS** again, but does not invalidate independent GPU analysis. Changing both has no predetermined net effect.
+Documentation: `splat-cleaner/README.md`.
 
-**Workflow:** Select model → **Analyze** → **Analyze SNS** (and GPU Floaters if needed) → enable rules and optional scope → **Apply / Preview** → inspect **Original / Candidates / Cleaned** → **Restore** or **Export Cleaned**. Analyses are cached independently; preview is temporary and export writes a new retained-splat model.
+## Installation and Startup
 
-**Limits:** Clustered or very large floaters can survive SNS; sparse legitimate details can be selected. Opacity/Size rules may find additional artifacts but cannot automatically protect SNS false positives under OR composition. Inspect candidates before export. In v0.3.1, GPU Floater analysis is temporarily limited to **2 million instances**; CPU SNS has no equivalent fixed cap. WebGPU device-loss errors can require an Editor reload.
+**Prerequisites:** Node.js/npm, Git for initial checkout, and a compatible browser.
 
-![plugin_splat-cleaner](Screenshot_plugin_splat-cleaner.png)
+### 1. Prepare Files
 
-## Installation and startup
-
-**Prerequisites:** Node.js with npm, Git for initial checkout, and a browser compatible with the selected Editor and plugin features.
-
-### 1. Arrange release files
-
-Extract the Manager, XYZ Filter, and **complete installable** Splat Cleaner packages into one project root, alongside the supplied Windows maintenance scripts. Required directory layout:
+Extract the Manager and complete plugin packages alongside the supplied Windows maintenance scripts:
 
 ~~~text
 release_plugin_manager_v1.11/
 ├── plugin-manager/
 ├── xyz-filter/
 ├── splat-cleaner/
-├── supersplat/                 # created by clone or existing checkout
+├── supersplat/              # cloned or existing checkout
 ├── maintain_editor.bat
 ├── maintain_editor.ps1
 ├── deploy_runtime.ps1
@@ -81,46 +105,59 @@ release_plugin_manager_v1.11/
 └── stop_supersplatEditor_p3013.bat
 ~~~
 
-Splat Cleaner must include its compiled `vendor/splat-transform-filter.mjs`. If using a **source-only ZIP**, build the plugin release first; Plugin Manager does not compile npm dependencies. Install plugin folders through the Manager UI, **not** by copying them into `dist/plugins/`.
+The Splat Cleaner installable package must include the compiled `vendor/splat-transform-filter.mjs`. Its runtime can be built independently using SplatTransform Filter Bridge Builder v1.0.2; building it is not required when installing a complete plugin release.
 
-### 2. Build and start
+### 2. Build and Start
 
-From the project root (Windows examples):
+From the project root:
 
 ~~~powershell
-.\maintain_editor.bat clone    # first checkout only
-.\maintain_editor.bat build    # builds Editor and deploys Manager
-.\run_supersplatEditor_p3013.bat # To start 
-.\stop_supersplatEditor_p3013.bat # To stop
+.\maintain_editor.bat clone     # first checkout only
+.\maintain_editor.bat build
+.\run_supersplatEditor_p3013.bat
 ~~~
 
-Alternatively, start both services separately:
+Open **http://127.0.0.1:3013/**.
 
-| Service | Working directory | Command |
-|---|---|---|
-| Editor static server | `supersplat/` | `npm run serve -- -l tcp://127.0.0.1:3013 --no-port-switching` |
-| Management backend | Project root | `node ./supersplat/dist/runtime/management-server.cjs --dist ./supersplat/dist --port 3014 --editor-origin http://127.0.0.1:3013` |
+The launch script starts the Editor static server and the management backend. Ports **3013/3014** are examples; manual startup and port configuration are documented in the architecture guide.
 
-Open **http://127.0.0.1:3013/**. Ports are examples. When changing them, update both backend `--editor-origin` and the Editor HTML hook's `data-management-origin`. Starting services does not build the Editor or activate plugins; saved **Startup** activates plugins when the browser page initializes.
+To stop:
 
-![plugins_button_list](Screenshot_plugins_button.png)
-![plugin-manager](Screenshot_plugin-manager.png)
+~~~powershell
+.\stop_supersplatEditor_p3013.bat
+~~~
 
-### 3. Install plugins
+### 3. Install Plugins
 
-Open **Plugins → Manage Plugins → Install Plugin**, select the complete plugin folder, then **Activate**. Optionally enable **Startup** and **Save**; open the plugin from the **Plugins** menu. Plugin-only updates require **no Editor rebuild**.
+Open **Plugins → Manage Plugins → Install Plugin**, select the complete plugin folder, and choose **Activate**.
 
-## Maintenance and limitations
+Optionally enable **Startup** and **Save**. Open the plugin from the **Plugins** menu.
 
-| Task | Procedure |
+Install plugins through the Manager UI, not by manually copying files into `dist/plugins/`.
+
+![Plugins menu](Screenshot_plugins_button.png)
+
+![Plugin Manager](Screenshot_plugin-manager.png)
+
+## Maintenance and Compatibility
+
+| Operation | Procedure |
 |---|---|
 | Rebuild Editor and deploy Manager | `maintain_editor.bat build` |
-| Update Manager only | `maintain_editor.bat copy` |
-| Update plugin | **Deactivate → Remove → Install → Activate** |
-| Restore management operations | Restart backend → **Refresh** |
+| Deploy Manager changes | `maintain_editor.bat copy` |
+| Update plugin | Deactivate → Remove → Install → Activate |
+| Restore backend access | Restart backend → Refresh |
 
-Removal resets saved plugin settings and Startup preferences. If browser cleanup is uncertain, reload the Editor before reactivating a replacement. Install/Save/Remove need the backend; already installed plugins can run from the static server without it.
+Removing a plugin resets its saved settings and Startup preferences.
 
-**Security and compatibility:** Use trusted plugins, keep the management backend on a trusted local machine, and keep secrets/logs outside served `dist/`. Internal Editor APIs and browser/WebGPU behavior may change between releases. Verify plugin-specific behavior after Editor upgrades.
+Use trusted plugins and keep the management backend on a trusted local machine. Upstream Editor API changes and browser/WebGPU compatibility may require plugin updates.
 
-**Project scope:** Reusable SuperSplat extension infrastructure, demonstrated by independently maintained 3DGS inspection and cleanup plugins.
+## Documentation
+
+- **Plugin development:** `SuperSplat_Plugin_Developer_Guide_v1.11.md`
+- **XYZ Filter document:** `xyz-filter/README.md`
+- **Splat Cleaner document:** `splat-cleaner/README.md`
+
+---
+
+**Scope:** Independent plugin management and runtime integration for SuperSplat Editor, demonstrated by two specialized 3DGS editing plugins.
