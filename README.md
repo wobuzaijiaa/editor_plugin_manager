@@ -75,7 +75,7 @@ Documentation: `xyz-filter/README.md`.
 **Splat Cleaner** — 3DGS cleanup using Scale-Normalized Spacing (SNS), SplatTransform GPU Floaters, and complementary cleaning rules.
 
 - **SNS (Hybrid CPU/GPU):** Bidirectional covariance-normalized neighborhood-support detection that uses Gaussian scales and orientations to identify unsupported splats. SNS evaluates geometric support rather than directly measuring rendering quality.
-- **GPU Floaters:** Independent SplatTransform **v3.11.1** analysis using a bundled browser runtime.
+- **GPU Floaters:** Independent SplatTransform **v3.11.2** analysis using a bundled browser runtime.
 - **Other rules:** Size, Opacity, and detached-component candidate selection, with XYZ region and density scope.
 - **Cached analysis and selection:** Independent analysis results are reused while valid. After the initial **Apply / Preview**, changing enabled methods automatically refreshes the candidate selection; analysis or selection-parameter changes still require manual **Apply / Preview**.
 - **Visual inspection:** Preview Original, Candidates, and Cleaned results. **Method Tint** highlights one enabled method at a time in Original or Candidates view, with configurable color and opacity. Candidate selection may include legitimate scene details.
