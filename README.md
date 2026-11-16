@@ -2,8 +2,8 @@
 
 A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://github.com/playcanvas/supersplat), supporting independent plugin development and management **without modifying upstream TypeScript or rebuilding the Editor for each plugin update**.
 
-**Versions:** Plugin Manager **v1.11** · XYZ Filter **v1.0.10** · Splat Cleaner **v0.3.18**.  
-**Editor references:** SuperSplat **v3.7.0**, **v3.8.0** and **v3.8.1**  (reviewed versions, not guaranteed compatibility across releases).
+**Versions:** Plugin Manager **v1.11** · Plugin XYZ Filter **v1.0.10** · Plugin Splat Cleaner **v0.3.18**.  
+**Editor references:** SuperSplat **v3.7.0**, **v3.8.0** and **v3.8.1**  (reviewed versions, not guaranteed compatibility across releases)   
 
 ## Motivation
 
@@ -101,31 +101,81 @@ release_plugin_manager_v1.11/
 ├── maintain_editor.bat
 ├── maintain_editor.ps1
 ├── deploy_runtime.ps1
+├── start_architecture_c.ps1
 ├── run_supersplatEditor_p3013.bat
 └── stop_supersplatEditor_p3013.bat
 ~~~
 
-The Splat Cleaner installable package must include the compiled `vendor/splat-transform-filter.mjs`. Its runtime can be built independently using SplatTransform Filter Bridge Builder v1.0.2; building it is not required when installing a complete plugin release.
+The Splat Cleaner installable package must include the compiled `vendor/splat-transform-filter.mjs`. Its runtime can be built independently using customized SplatTransform Filter Bridge Builder v1.0.3; building it is not required when installing a complete plugin release.
 
 ### 2. Build and Start
 
-From the project root:
+Prepare the Editor using the supplied Windows maintenance scripts from the project root:
 
 ~~~powershell
 .\maintain_editor.bat clone     # first checkout only
 .\maintain_editor.bat build
+~~~
+
+Choose one of the following startup methods.
+
+#### Option A — Windows launch scripts
+
+~~~powershell
 .\run_supersplatEditor_p3013.bat
 ~~~
 
-Open **http://127.0.0.1:3013/**.
+Opens **http://127.0.0.1:3013/** automatically.
 
-The launch script starts the Editor static server and the management backend. Ports **3013/3014** are examples; manual startup and port configuration are documented in the architecture guide.
-
-To stop:
+Press any key in the launch terminal to stop both services, or run:
 
 ~~~powershell
 .\stop_supersplatEditor_p3013.bat
 ~~~
+
+#### Option B — Windows custom ports
+
+Start both services, for example on ports 3023/3014:
+
+~~~powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\start_architecture_c.ps1 -Action start -EditorPort 3023 -ManagementPort 3014
+~~~
+
+To stop:
+
+~~~powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\start_architecture_c.ps1 -Action stop -EditorPort 3023 -ManagementPort 3014
+~~~
+
+#### Option C — Manual startup (Windows, Linux, macOS)
+
+Requires an already built and deployed Editor with Node.js dependencies installed on the respective platform.
+
+**Terminal 1 — Editor static server (from project root):**
+
+~~~bash
+cd supersplat
+npm run serve -- -l tcp://127.0.0.1:3023 --no-port-switching
+~~~
+
+**Terminal 2 — Management backend (from project root):**
+
+~~~bash
+node ./supersplat/dist/runtime/management-server.cjs --dist ./supersplat/dist --port 3014 --editor-origin http://127.0.0.1:3023
+~~~
+
+Open **http://127.0.0.1:3023/**.
+
+Press **Ctrl+C** in each terminal to stop both services.
+
+**Port configuration:**
+
+- The Editor port must match `--editor-origin`.
+- When changing the management port, update `data-management-origin` in `supersplat/dist/index.html` accordingly.
+- Both ports must be available and different.
+- Use separate distributions and plugin stores for concurrent instances.
+
+Stop both services before running maintenance.
 
 ### 3. Install Plugins
 
