@@ -1,7 +1,7 @@
-# SuperSplat Plugin Developer Guide
+# Editor Plugin Developer Guide
 
 **Target:** Editor Plugin Manager v1.11 — Architecture C  
-**Reviewed Editor baseline:** PlayCanvas SuperSplat Editor v3.7.0 (`4069712370df3425c386610f28a814403e835543`); not a version lock  
+**Reviewed Editor baseline:** PlayCanvas SuperSplat Editor v3.8.1, v3.8.0 and v3.8.1 ; not a version lock  
 **Audience:** Developers of independently installable browser plugins
 
 ## 1. Purpose and responsibility boundary
