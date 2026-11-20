@@ -1,6 +1,26 @@
 License Scope
 
-This MIT License applies to the original SuperSplat Plugin Manager and its example plugins authored by repo@gjt. It does not relicense PlayCanvas SuperSplat Editor, the existing XYZ extension, or third-party dependencies. Retain their respective copyright and license notices when distributing a combined package.
+This MIT License applies to the original software and documentation
+developed by repo@gjt for this repository, including:
+
+- SuperSplat Plugin Manager and its example plugins.
+- XYZ Filter, Snapshot & Export.
+- Region-Aware Splat Cleaner.
+- Standard and portable launchers.
+- Integration, deployment, maintenance and testing tools.
+- Associated project documentation.
+
+This license applies only to material for which repo@gjt holds the
+copyright or has authority to grant this license.
+
+PlayCanvas SuperSplat Editor, PlayCanvas Engine, SplatTransform,
+and other third-party software remain subject to their respective
+licenses.
+
+Combined standard and portable distributions do not relicense their
+upstream or third-party components. Their applicable copyright
+notices, license notices and distribution requirements must be preserved.
+
 
 MIT License
 
