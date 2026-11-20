@@ -61,8 +61,6 @@ Coordinate-based filtering and spatial inspection of 3DGS models.
 
 ![XYZ Filter](Screenshot_plugin_xyz-filter.png)
 
-Documentation: [XYZ Filter](xyz-filter/README.md).
-
 ### Region-Aware Splat Cleaner
 
 Interactive 3DGS cleaning through complementary detection methods.
@@ -75,8 +73,6 @@ Interactive 3DGS cleaning through complementary detection methods.
 - **Selective export:** Retained Gaussians with a JSON cleaning report.
 
 ![Splat Cleaner](Screenshot_plugin_splat-cleaner.png)
-
-Documentation: [Splat Cleaner](splat-cleaner/README.md).
 
 ## Installation and Startup
 
@@ -178,5 +174,5 @@ Other Editor versions, platforms and GPU environments require separate compatibi
 ## Documentation
 
 - **Plugin Developer Guide** — Plugin development and integration contracts.
-- **[XYZ Filter](xyz-filter/README.md)** — Spatial filtering, snapshots and export.
-- **[Splat Cleaner](splat-cleaner/README.md)** — Geometry-aware cleaning and visual inspection.
+- **README_Plugin_XYZ_Filter.md** — Spatial filtering, snapshots and export.
+- **README_Plugin_Splat_Cleaner.md** — Geometry-aware cleaning and visual inspection.
