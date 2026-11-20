@@ -1,0 +1,43 @@
+{
+  "id": "splat-cleaner",
+  "name": "Region-Aware Splat Cleaner",
+  "classification": "Spatial inspection and cleaning",
+  "version": "0.3.37",
+  "author": "Region-Aware Splat Cleaner contributors",
+  "date": "2026-11-20",
+  "description": "Region-aware cleaning with system SplatTransform CLI, visible Windows PowerShell GPU Floaters, stable instance-ID masks, CPU/GPU SNS, independent analysis caches, opacity filtering, reversible tint and native export.",
+  "entry": "./index.js",
+  "requires": {
+    "editor_api": [],
+    "internal_api": [
+      "scene.elements",
+      "scene.events",
+      "scene.commandQueue",
+      "splat.instances",
+      "splat.resource.source",
+      "splat.resource.sourcePool",
+      "splat.worldTransform",
+      "splat.transformPalette",
+      "splat.createLayer"
+    ]
+  },
+  "settings_schema": [
+    {
+      "key": "floaters-auto-stop",
+      "type": "boolean",
+      "label": "Stop Floaters service after analysis (default true)"
+    },
+    {
+      "key": "floaters-gpu-backend",
+      "type": "string",
+      "label": "GPU Floaters backend: vulkan (default), d3d12 (explicit opt-in)"
+    }
+  ],
+  "native_service": {
+    "entry": "./native/service.mjs",
+    "port": {
+      "required": true,
+      "preferred": 3015
+    }
+  }
+}
