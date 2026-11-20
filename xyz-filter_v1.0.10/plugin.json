@@ -1,0 +1,31 @@
+{
+  "id": "xyz-filter",
+  "name": "XYZ Filter, Snapshot & Export",
+  "classification": "Spatial Editing",
+  "version": "1.0.10",
+  "author": "repo@gjt",
+  "date": "2026-11-11",
+  "description": "Single-model reversible XYZ Gaussian filtering, orthographic snapshot PNG/JSON, native filtered export and provenance reports. Requires startup activation before model import for reliable post-load transformation tracking.",
+  "entry": "./index.js",
+  "requires": {
+    "editor_api": [
+      "viewport.captureFrame"
+    ],
+    "internal_api": [
+      "scene.elements",
+      "scene.events",
+      "scene.commandQueue",
+      "scene.camera",
+      "scene.graphicsDevice",
+      "scene.gizmoLayer",
+      "scene.centersLayer",
+      "splat.instances",
+      "splat.resource.source",
+      "splat.resource.sourcePool",
+      "splat.worldTransform",
+      "splat.transformPalette",
+      "splat.createLayer"
+    ]
+  },
+  "third_party": []
+}
