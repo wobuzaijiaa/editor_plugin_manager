@@ -1,0 +1,6 @@
+{
+  "name": "supersplat-plugin-manager",
+  "private": true,
+  "type": "module",
+  "description": "External browser plugin manager for SuperSplat Editor; no npm install required"
+}
