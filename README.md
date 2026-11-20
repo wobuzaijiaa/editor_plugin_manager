@@ -174,5 +174,5 @@ Other Editor versions, platforms and GPU environments require separate compatibi
 ## Documentation
 
 - **Plugin Developer Guide** — Plugin development and integration contracts.
-- **README_Plugin_XYZ_Filter.md** — Spatial filtering, snapshots and export.
-- **README_Plugin_Splat_Cleaner.md** — Geometry-aware cleaning and visual inspection.
+- **README_Plugin_XYZ_Filter** — Spatial filtering, snapshots and export.
+- **README_Plugin_Splat_Cleaner** — Geometry-aware cleaning and visual inspection.
