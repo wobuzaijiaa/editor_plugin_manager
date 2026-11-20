@@ -1,0 +1,23 @@
+{
+  "id": "scene-info",
+  "name": "Scene Information",
+  "classification": "Utility",
+  "version": "0.1.1",
+  "author": "repo@gjt",
+  "date": "2026-11-06",
+  "description": "Reference plugin showing basic Editor inspection information through the public Editor API.",
+  "entry": "./index.js",
+  "settings_schema": [
+    {
+      "key": "show-details",
+      "type": "boolean",
+      "label": "Show detailed scene inspection"
+    }
+  ],
+  "requires": {
+    "editor_api": [
+      "inspect.scene"
+    ],
+    "internal_api": []
+  }
+}
