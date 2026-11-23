@@ -4,7 +4,7 @@ A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://git
 
 **Plugin Manager:** v1.13.3  
 **Reference plugins:** XYZ Filter v1.0.10 · Splat Cleaner v0.3.37  
-**Editor references:** SuperSplat v3.7.0–v3.9.1
+**Editor references:** SuperSplat v3.7.0–v3.9.2
 
 ## Motivation
 
@@ -18,7 +18,7 @@ Editor Plugin Manager separates plugin development and management from the upstr
 
 - **Independent plugins:** Install, configure, activate, remove and update plugins without rebuilding the Editor.
 - **Persistent configuration:** Manage plugin settings and automatic startup.
-- **Native software integration:** Extend browser functionality using existing system CLI tools, libraries and processing scripts.
+- **Native software integration:** Extend browser functionality using ystem-installed or bundled CLI tools, libraries and processing scripts.
 - **Managed native execution:** Authorization, port assignment, process lifecycle and resource cleanup coordination.
 - **Reusable architecture:** Develop specialized plugins through common integration and lifecycle interfaces.
 
@@ -66,7 +66,7 @@ Coordinate-based filtering and spatial inspection of 3DGS models.
 Interactive 3DGS cleaning through complementary detection methods.
 
 - **SNS:** Bidirectional, scale-normalized geometric-support detection.
-- **GPU Floaters:** Contribution-based filtering using system SplatTransform.
+- **GPU Floaters:** Contribution-based filtering using configured SplatTransform.
 - **Additional rules:** Size, Opacity and detached components.
 - **Region-aware selection:** XYZ bounds and density scope.
 - **Visual inspection:** Original, Candidates and Cleaned views, with individual Method Tint.
@@ -76,13 +76,20 @@ Interactive 3DGS cleaning through complementary detection methods.
 
 ## Installation and Startup
 
-**Requirements:** Node.js/npm, Git for initial checkout, Windows PowerShell for the Windows workflow, and a compatible browser.
+**Requirements:** Windows PowerShell, a compatible browser, and the Node.js/runtime dependencies required by the selected deployment profile. Git is required for the initial Editor checkout in the standard source deployment.
 
-Extract the Manager and complete plugin packages alongside the supplied maintenance and startup scripts.
+The Unified Launcher supports two deployment profiles:
+
+| Profile            | Description                                                        |
+| ------------------ | ------------------------------------------------------------------ |
+| **Standard**       | Existing SuperSplat source/build installation with system Node.js. |
+| **Self-contained** | Deployment with packaged Node.js and runtime dependencies.         |
+
+Select the appropriate profile in `launcher_config.json` before startup. The supplied example configuration defaults to `self-contained`.
 
 ### 1. Prepare the Editor
 
-From the project root:
+For the standard source/build deployment, prepare the Editor from the project root:
 
 ~~~powershell
 .\maintain_editor.bat clone
@@ -97,28 +104,80 @@ For an existing compatible Editor build, deploy Manager without rebuilding:
 .\maintain_editor.bat copy
 ~~~
 
+Portable and self-contained deployments use their prepared Editor distribution and configured runtime dependencies.
+
 ### 2. Start the Editor
 
-~~~powershell
-.\run_supersplatEditor_p3013.bat
-~~~
+The recommended startup method is **Unified Launcher GUI**.
 
-Opens http://127.0.0.1:3013/ automatically.
+#### Option A — Unified Launcher GUI (Recommended)
 
-Press any key in the launch terminal to initiate shutdown, or run:
+From the launcher deployment directory:
 
 ~~~powershell
-.\stop_supersplatEditor_p3013.bat
+.\EditorPluginManager.bat
 ~~~
 
-Alternatively, use the Node.js launcher with an already prepared Editor:
+The launcher provides:
 
-~~~bash
-node editor_services.mjs start
-node editor_services.mjs stop
+- Editor and Management service startup and shutdown.
+- Configurable Editor and Management ports.
+- Standalone Editor operation.
+- Project creation and selection.
+- Model registration and optional restoration.
+- Service status, runtime output and diagnostic logging.
+
+![Launcher_UI](Screenshot_launcher_ui.png)
+
+For ordinary Editor operation:
+
+1. Select **(Standalone)**.
+2. Confirm the configured ports.
+3. Click **Start**.
+4. Open the Editor using **Open Editor**.
+5. Click **Stop** for controlled shutdown.
+
+#### Optional Project Restoration
+
+The Unified Launcher can also organize registered models by project.
+
+1. Select a project root and create or select a project.
+2. Use **Add Model** to register model files and import rotations.
+3. Select the models to restore using their **Load** checkboxes.
+4. Enable **Automatically restore project models**.
+5. Click **Start** to launch the Editor and restore the enabled models.
+
+Project definitions are stored in `project.json`.
+
+The launcher uses Project Restoration v0.1.5 and can automatically provision the bundled restoration plugin through Plugin Manager when required. 
+
+Project restoration imports registered model files and applies their configured orientations. It does not restore the complete Editor scene, editing history or camera state.
+
+For operation without automatic model loading, select **(Standalone)** or disable automatic restoration.
+
+#### Option B — Standalone BAT Startup
+
+Start the Editor directly:
+
+~~~powershell
+.\start.bat
 ~~~
 
-Custom ports, manual startup and portable deployment are covered in the Maintenance Guide. Portable deployment additionally requires globally installed npm `serve`.
+Optionally specify Editor and Management ports:
+
+~~~powershell
+.\start.bat 3013 3014
+~~~
+
+Press any key in the startup terminal to initiate shutdown, or run:
+
+~~~powershell
+.\stop.bat
+~~~
+
+The BAT startup operates in standalone mode and does not automatically restore the project selected in the GUI.
+
+Direct Node.js launcher commands, deployment configuration and detailed project restoration procedures are documented in the Unified Launcher README.
 
 ### 3. Install Plugins
 
@@ -132,12 +191,16 @@ Custom ports, manual startup and portable deployment are covered in the Maintena
 
 ### Optional GPU Floaters Runtime
 
-GPU Floaters requires system-installed SplatTransform. The evaluated version is v3.11.2.
+GPU Floaters requires SplatTransform. The evaluated versions are v3.11.2 and v3.12.0.
+
+For standard and portable deployments using system-installed SplatTransform:
 
 ~~~powershell
-npm install -g @playcanvas/splat-transform@3.11.2
+npm install -g @playcanvas/splat-transform@3.12.0
 splat-transform --version
 ~~~
+
+Self-contained deployments use the SplatTransform package configured in `launcher_config.json`.
 
 On first execution, authorize the native service and select an available port.
 
@@ -157,22 +220,31 @@ See the Plugin Developer Guide for package specifications and implementation exa
 
 | Operation | Procedure |
 |---|---|
-| Rebuild Editor | `maintain_editor.bat build` |
-| Update Manager runtime | `maintain_editor.bat copy` |
+| Rebuild standard Editor | `maintain_editor.bat build` |
+| Update Manager runtime in standard deployment | `maintain_editor.bat copy` |
+| Start / stop Editor services | Unified Launcher GUI or `start.bat` / `stop.bat` |
+| Update launcher | Stop services, close GUI and replace the affected launcher files |
 | Update plugin | Deactivate → Remove → Install → Activate |
-| Restore backend access | Restart backend → Refresh |
+| Restore backend access | Stop → Start services → Refresh Editor |
 | Change native port | Manager → Change native port |
+| Change deployment profile | Stop services → Edit `launcher_config.json` → Restart |
 
-Stop running services before maintenance. Install only trusted plugins and keep local services bound to loopback.
+Stop running services before maintenance. Preserve deployment configuration and saved project files when updating the launcher.
+
+Install only trusted plugins and keep local services bound to loopback.
+
+Detailed deployment procedures, project restoration behavior, diagnostics and recovery are covered in the Unified Launcher README and Maintenance Guide.
 
 ## Compatibility
 
-Standard and portable Windows deployments have been successfully operated with SuperSplat v3.9.1, PlayCanvas Engine v2.24.1 and Cleaner v0.3.37.
+Standard, portable and self-contained Windows deployments have been successfully operated with SuperSplat v3.9.2 and PlayCanvas Engine v2.24.1.
+
+Editor references cover v3.7.0–v3.9.2 across project development and compatibility testing.
 
 Other Editor versions, platforms and GPU environments require separate compatibility verification.
 
 ## Documentation
 
-- **Plugin Developer Guide** — Plugin development and integration contracts.
 - **README_Plugin_XYZ_Filter** — Spatial filtering, snapshots and export.
 - **README_Plugin_Splat_Cleaner** — Geometry-aware cleaning and visual inspection.
+- **Editor_Plugin_Manager_Plugin_Developer_Guide** — Plugin package specifications and implementation examples.
