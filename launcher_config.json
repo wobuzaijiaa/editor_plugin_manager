@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "active_profile": "standard",
+  "profiles": {
+    "standard": {
+      "paths": {
+        "editor_root": "supersplat",
+        "dist": "supersplat/dist",
+        "management_backend": "supersplat/dist/runtime/management-server.cjs",
+        "node": "node.exe",
+        "serve": "supersplat/node_modules/serve",
+        "typescript": "supersplat/node_modules/typescript",
+        "splat_transform": "%APPDATA%/npm/node_modules/@playcanvas/splat-transform",
+        "vulkan_loader": null,
+        "logs": "logs/run_logs"
+      },
+      "ports": {
+        "editor": 3013,
+        "management": 3014
+      },
+      "policies": {
+        "management_origin": "validate",
+        "native_environment": "system"
+      }
+    },
+    "portable": {
+      "paths": {
+        "editor_root": ".",
+        "dist": "dist",
+        "management_backend": "dist/runtime/management-server.cjs",
+        "node": "node.exe",
+        "serve": "%APPDATA%/npm/node_modules/serve",
+        "typescript": null,
+        "splat_transform": "%APPDATA%/npm/node_modules/@playcanvas/splat-transform",
+        "vulkan_loader": null,
+        "logs": "logs/run_logs"
+      },
+      "ports": {
+        "editor": 3017,
+        "management": 3018
+      },
+      "policies": {
+        "management_origin": "synchronize",
+        "native_environment": "system"
+      }
+    },
+    "self-contained": {
+      "paths": {
+        "editor_root": ".",
+        "dist": "dist",
+        "management_backend": "dist/runtime/management-server.cjs",
+        "node": "runtime/node.exe",
+        "serve": "node_modules/serve",
+        "typescript": "node_modules/typescript",
+        "splat_transform": "node_modules/@playcanvas/splat-transform",
+        "vulkan_loader": "runtime/vulkan-1.dll",
+        "logs": "logs/run_logs"
+      },
+      "ports": {
+        "editor": 3017,
+        "management": 3018
+      },
+      "policies": {
+        "management_origin": "synchronize",
+        "native_environment": "bundled"
+      }
+    }
+  }
+}
