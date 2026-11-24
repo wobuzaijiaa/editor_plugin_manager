@@ -18,7 +18,7 @@ Editor Plugin Manager separates plugin development and management from the upstr
 
 - **Independent plugins:** Install, configure, activate, remove and update plugins without rebuilding the Editor.
 - **Persistent configuration:** Manage plugin settings and automatic startup.
-- **Native software integration:** Extend browser functionality using ystem-installed or bundled CLI tools, libraries and processing scripts.
+- **Native software integration:** Extend browser functionality using system-installed or bundled CLI tools, libraries and processing scripts.
 - **Managed native execution:** Authorization, port assignment, process lifecycle and resource cleanup coordination.
 - **Reusable architecture:** Develop specialized plugins through common integration and lifecycle interfaces.
 
