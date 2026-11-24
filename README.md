@@ -245,6 +245,7 @@ Other Editor versions, platforms and GPU environments require separate compatibi
 
 ## Documentation
 
-- **README_Plugin_XYZ_Filter** — Spatial filtering, snapshots and export.
-- **README_Plugin_Splat_Cleaner** — Geometry-aware cleaning and visual inspection.
-- **Editor_Plugin_Manager_Plugin_Developer_Guide** — Plugin package specifications and implementation examples.
+- [README_Plugin_XYZ_Filter](README_Plugin_XYZ_Filter_v1.0.10.md) — Spatial filtering, snapshots and export.
+- [README_Plugin_Splat_Cleaner](README_Plugin_Splat_Cleaner_v0.3.37.md) — Geometry-aware cleaning and visual inspection.
+- [README_SNS_Introduction](README_SNS_Introduction.md) — Introduction of SNS Splats Cleaning Concept.
+- [Editor_Plugin_Manager_Plugin_Developer_Guide](Editor_Plugin_Manager_Plugin_Developer_Guide_v1.13.3.md) — Plugin package specifications and implementation examples.
