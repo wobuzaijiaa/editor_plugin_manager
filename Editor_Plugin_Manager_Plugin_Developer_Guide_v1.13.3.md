@@ -1,9 +1,9 @@
 # Editor Plugin Manager v1.13.3 — Plugin Developer Guide
 
 **Target:** Plugin Manager v1.13.3 — Architecture C  
-**Editor reference runtime:** SuperSplat v3.7.0–v3.9.1  
+**Editor reference runtime:** SuperSplat v3.7.0–v3.9.2  
 **Reference plugins:** XYZ Filter v1.0.10 · Splat Cleaner v0.3.37  
-**Revision:** 2026-11-20
+**Revision:** 2026-11-24
 
 ## 1. Development Overview
 
