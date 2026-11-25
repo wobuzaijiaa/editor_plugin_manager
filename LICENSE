@@ -1,25 +1,17 @@
 License Scope
 
-This MIT License applies to the original software and documentation
-developed by repo@gjt for this repository, including:
+This MIT License applies to the original software and documentation developed by repo@gjt for:
 
-- SuperSplat Plugin Manager and its example plugins.
-- XYZ Filter, Snapshot & Export.
+- SuperSplat Plugin Manager.
 - Region-Aware Splat Cleaner.
-- Standard and portable versions launchers.
-- Integration, deployment, maintenance and testing tools.
-- Associated project documentation.
+- Unified Launcher and its standard, portable, and self-contained deployment variants.
+- Associated integration, deployment, maintenance, testing tools and documentation.
 
-This license applies only to material for which repo@gjt holds the
-copyright or has authority to grant this license.
+This license applies only to material for which repo@gjt holds the copyright or has authority to grant this license.
 
-PlayCanvas SuperSplat Editor, PlayCanvas Engine, SplatTransform,
-and other third-party software remain subject to their respective
-licenses.
+XYZ Semantic is outside the scope of this license and is separately licensed under the Mozilla Public License, Version 2.0 (MPL-2.0).
 
-Combined standard and portable distributions do not relicense their
-upstream or third-party components. Their applicable copyright
-notices, license notices and distribution requirements must be preserved.
+Upstream and third-party components remain subject to their respective licenses. Distribution together with MIT-licensed components does not change their applicable license terms, copyright notices or distribution requirements.
 
 
 MIT License
