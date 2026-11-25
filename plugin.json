@@ -1,0 +1,34 @@
+{
+  "id": "xyz-semantic",
+  "name": "XYZ Semantic — Building, Floor & Room",
+  "classification": "Spatial Editing",
+  "version": "0.2.0",
+  "author": "repo@gjt",
+  "date": "2026-11-25",
+  "description": "XYZ Filter fork with auto-saved building/floor/convex-room semantics, top-down polygon authoring, reversible building/floor/room isolation, snapshots, native subset export and read-only virtual camera location tracking.",
+  "entry": "./index.js",
+  "requires": {
+    "editor_api": [
+      "viewport.captureFrame",
+      "viewport.setCamera",
+      "viewport.info"
+    ],
+    "internal_api": [
+      "scene.elements",
+      "scene.events",
+      "scene.commandQueue",
+      "scene.camera",
+      "scene.canvas",
+      "scene.graphicsDevice",
+      "scene.gizmoLayer",
+      "scene.centersLayer",
+      "splat.instances",
+      "splat.resource.source",
+      "splat.resource.sourcePool",
+      "splat.worldTransform",
+      "splat.transformPalette",
+      "splat.createLayer"
+    ]
+  },
+  "third_party": []
+}
