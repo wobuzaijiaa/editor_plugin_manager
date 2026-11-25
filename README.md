@@ -3,7 +3,9 @@
 A lightweight extension framework for [PlayCanvas SuperSplat Editor](https://github.com/playcanvas/supersplat), enabling independent plugin development and management **without modifying upstream TypeScript or rebuilding the Editor for each plugin update**.
 
 **Plugin Manager:** v1.13.3  
-**Reference plugins:** XYZ Filter v1.0.10 · Splat Cleaner v0.3.37  
+
+**Reference plugins:** XYZ Semantic v0.2.0 · Splat Cleaner v0.3.37
+ 
 **Editor references:** SuperSplat v3.7.0–v3.9.2
 
 ## Motivation
@@ -50,16 +52,20 @@ This allows existing software to complement browser-based visualization without 
 
 ## Reference Plugins
 
-### XYZ Filter, Snapshot & Export
 
-Coordinate-based filtering and spatial inspection of 3DGS models.
+### XYZ Semantic — Building Semantic Modeling
 
-- Interactive XYZ filtering with reversible preview.
-- Selective model export.
-- Orthographic snapshots with camera and section metadata.
-- Transformation-aware export reports.
+Human-guided **2.5D semantic modeling** for 3DGS building reconstructions.
 
-![XYZ Filter](Screenshot_plugin_xyz-filter.png)
+Based on a **Building → Floor → Room** hierarchy, floors define shared vertical ranges while rooms use manually drawn convex polygons in the horizontal XZ-plane. Approximate boundaries accommodate wall thickness and reconstruction noise without requiring complex 3D reconstruction or automatic segmentation.
+
+- **Spatial filtering:** Reversible XYZ filtering with Full Floor, Ceiling-Free and Wall Slice viewing modes.
+- **Building semantics:** Persistent floor/room hierarchy, convex polygon editing and spatial navigation.
+- **Semantic documentation:** Annotated snapshots, selective model export and transformation-aware metadata.
+- **Live location tracking:** Real-time identification of the virtual camera's building, floor and room.
+- **Reusable semantic data:** Model-associated JSON definitions for spatial queries and downstream integration.
+
+![XYZ Semantic](Screenshot_plugin_xyz-semantic.png)
 
 ### Region-Aware Splat Cleaner
 
@@ -245,7 +251,20 @@ Other Editor versions, platforms and GPU environments require separate compatibi
 
 ## Documentation
 
-- [README_Plugin_XYZ_Filter](README_Plugin_XYZ_Filter_v1.0.10.md) — Spatial filtering, snapshots and export.
+- [README_Plugin_XYZ_Semantic](README_Plugin_XYZ_Semantic_v0.2.0.md) — 2.5D building semantic modeling, spatial navigation, snapshots, export and live location tracking.
 - [README_Plugin_Splat_Cleaner](README_Plugin_Splat_Cleaner_v0.3.37.md) — Geometry-aware cleaning and visual inspection.
 - [README_SNS_Introduction](README_SNS_Introduction.md) — Introduction of SNS Splats Cleaning Concept.
 - [Editor_Plugin_Manager_Plugin_Developer_Guide](Editor_Plugin_Manager_Plugin_Developer_Guide_v1.13.3.md) — Plugin package specifications and implementation examples.
+
+## License
+
+- **MIT License** — SuperSplat Plugin Manager, Region-Aware Splat Cleaner, Unified Launcher and associated integration, deployment, maintenance and testing tools developed by repo@gjt.
+- **Mozilla Public License 2.0 (MPL-2.0)** — XYZ Semantic.
+
+Upstream and third-party components remain subject to their respective licenses.
+
+Integration or distribution together does not change the applicable licenses of individual components.
+
+Refer to the respective license files for the complete license terms.
+
+Copyright (c) 2026 repo@gjt.
