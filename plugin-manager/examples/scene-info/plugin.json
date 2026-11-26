@@ -1,0 +1,30 @@
+{
+  "id": "scene-info",
+  "name": "Scene Information",
+  "classification": "Utility",
+  "version": "0.1.3",
+  "author": "repo@gjt",
+  "date": "2026-11-26",
+  "description": "Editor and loaded-model information with a minimal Manager-authorized native HTTP service.",
+  "entry": "./index.js",
+  "settings_schema": [
+    {
+      "key": "show-details",
+      "type": "boolean",
+      "label": "Show detailed scene inspection"
+    }
+  ],
+  "requires": {
+    "editor_api": [
+      "inspect.scene"
+    ],
+    "internal_api": []
+  },
+  "native_service": {
+    "entry": "./native/service.mjs",
+    "port": {
+      "required": true,
+      "preferred": 3025
+    }
+  }
+}
